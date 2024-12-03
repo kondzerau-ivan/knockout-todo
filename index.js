@@ -1,11 +1,4 @@
 class ViewModel {
-    todos = ko.observableArray([
-        { id: 1, title: 'learn M2', complited: false },
-        { id: 2, title: 'learn React', complited: false },
-        { id: 3, title: 'learn Vue', complited: false },
-        { id: 4, title: 'learn HTML', complited: true }
-    ]);
-
     addTodo = (element) => {
         const title = element.title.value;
         const lastElementIndex = this.todos().length - 1;
@@ -56,5 +49,25 @@ class ViewModel {
         }
     }
 }
+
+ko.bindingHandlers.getInitialState = {
+    init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        const savedTodos = localStorage.getItem('todos');
+
+        if (savedTodos && JSON.parse(savedTodos).length) {
+            viewModel.todos = ko.observableArray(JSON.parse(savedTodos));
+        } else {
+            viewModel.todos = ko.observableArray([
+                { id: 1, title: 'learn M2', complited: false },
+                { id: 2, title: 'learn React', complited: false },
+                { id: 3, title: 'learn Vue', complited: false },
+                { id: 4, title: 'learn HTML', complited: true }
+            ]);
+        }
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        localStorage.setItem('todos', JSON.stringify(viewModel.todos()))
+    }
+};
 
 ko.applyBindings(new ViewModel);
