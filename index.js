@@ -50,7 +50,7 @@ class ViewModel {
     }
 }
 
-ko.bindingHandlers.getInitialState = {
+ko.bindingHandlers.todosStateManager = {
     init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
         const savedTodos = localStorage.getItem('todos');
 
